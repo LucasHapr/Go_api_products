@@ -16,7 +16,6 @@ func NewProductRepository(db *sql.DB) *ProductRepository {
 }
 
 func (pr *ProductRepository) GetProducts() ([]model.Product, error) {
-	// Read from existing table `product` (singular) and map column `product_name` to `name`
 	query := "SELECT id, product_name AS name, price FROM product"
 	rows, err := pr.connection.Query(query)
 	if err != nil {
@@ -35,4 +34,19 @@ func (pr *ProductRepository) GetProducts() ([]model.Product, error) {
 	}
 	rows.Close()
 	return productList, nil
+}
+
+func (pr *ProductRepository) CreateProduct(product model.Product) (int, error) {
+	var id int
+	query, err := pr.connection.Prepare("INSERT INTO product (product_name, price) VALUES ($1, $2) RETURNING id")
+	if err != nil {
+		return 0, err
+	}
+	err = query.QueryRow(product.Name, product.Price).Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+
+	query.Close()
+	return id, nil
 }

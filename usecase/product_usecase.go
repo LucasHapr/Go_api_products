@@ -18,3 +18,12 @@ func NewProductUsecase(repo *repository.ProductRepository) *ProductUsecase {
 func (pu *ProductUsecase) GetAllProducts() ([]model.Product, error) {
 	return pu.repository.GetProducts()
 }
+
+func (pu *ProductUsecase) CreateProduct(product model.Product) (model.Product, error) {
+	id, err := pu.repository.CreateProduct(product)
+	if err != nil {
+		return model.Product{}, err
+	}
+	product.ID = id
+	return product, nil
+}
