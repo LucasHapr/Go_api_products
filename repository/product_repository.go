@@ -50,3 +50,45 @@ func (pr *ProductRepository) CreateProduct(product model.Product) (int, error) {
 	query.Close()
 	return id, nil
 }
+
+func (pr *ProductRepository) GetProductByID(id int) (*model.Product, error) {
+	query, err := pr.connection.Prepare("SELECT * FROM product WHERE id=$1")
+	if err != nil {
+		return nil, err
+	}
+
+	var product model.Product
+	err = query.QueryRow(id).Scan(&product.ID, &product.Name, &product.Price)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+	query.Close()
+	return &product, nil
+}
+
+func (pr *ProductRepository) DeleteProduct(id int) error {
+	query, err := pr.connection.Prepare("DELETE FROM product WHERE id=$1")
+	if err != nil {
+		return err
+	}
+	_, err = query.Exec(id)
+	return err
+}
+
+func (pr *ProductRepository) UpdateProduct(product model.Product) error {
+	res, err := pr.connection.Exec("UPDATE product SET product_name=$1, price=$2 WHERE id=$3", product.Name, product.Price, product.ID)
+	if err != nil {
+		return err
+	}
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rowsAffected == 0 {
+		return sql.ErrNoRows
+	}
+	return nil
+}

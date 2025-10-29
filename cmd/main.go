@@ -16,21 +16,25 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	//repository
 	ProductRepository := repository.NewProductRepository(dbConnection)
+
 	//usecase
 	ProductUseCase := usecase.NewProductUsecase(ProductRepository)
+
 	//controller
 	ProductController := controller.NewProductController(ProductUseCase)
 
-	server.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
+	//routes
 	server.GET("/products", ProductController.GetProducts)
+	server.GET("/products/:id", ProductController.GetProductByID)
+
 	server.POST("/products", ProductController.CreateProduct)
+
+	server.PUT("/products/:id", ProductController.UpdateProduct)
+
+	server.DELETE("/products/:id", ProductController.DeleteProduct)
 
 	server.Run(":8080")
 
