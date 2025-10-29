@@ -227,35 +227,6 @@ DELETE /products/:id
 }
 ```
 
-## 🧪 Testando a API
-
-### Usando cURL
-
-```bash
-# Criar produto
-curl -X POST http://localhost:8080/products \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Notebook","price":3500.00}'
-
-# Listar produtos
-curl http://localhost:8080/products
-
-# Buscar produto específico
-curl http://localhost:8080/products/1
-
-# Atualizar produto
-curl -X PUT http://localhost:8080/products/1 \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Notebook Gamer","price":4500.00}'
-
-# Deletar produto
-curl -X DELETE http://localhost:8080/products/1
-```
-
-### Usando Postman ou Insomnia
-
-Importe a coleção de requisições ou crie manualmente seguindo os endpoints acima.
-
 ## ⚙️ Configuração
 
 As configurações do banco de dados estão localizadas em `db/conn.go`:
@@ -269,9 +240,6 @@ const (
     dbname   = "postgres"
 )
 ```
-
-**Nota:** Para ambientes de produção, recomenda-se utilizar variáveis de ambiente para armazenar credenciais sensíveis.
-
 ## 🐳 Docker
 
 ### Construir a imagem
@@ -309,40 +277,10 @@ docker-compose logs -f
 | product_name | VARCHAR(255) | Nome do produto        |
 | price        | DECIMAL(10,2)| Preço do produto       |
 
-## 🤝 Contribuindo
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.
-
-1. Fork o projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/MinhaFeature`)
-5. Abra um Pull Request
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
 ## 👤 Autor
 
-**Lucas Hapr**
+**LucasHapr**
 
 - GitHub: [@LucasHapr](https://github.com/LucasHapr)
 - Repositório: [Go_api_products](https://github.com/LucasHapr/Go_api_products)
 
-## 🔮 Melhorias Futuras
-
-- [ ] Implementar autenticação JWT
-- [ ] Adicionar testes unitários e de integração
-- [ ] Implementar paginação nos endpoints de listagem
-- [ ] Adicionar validações mais robustas
-- [ ] Implementar logging estruturado
-- [ ] Adicionar migrations de banco de dados
-- [ ] Configuração via variáveis de ambiente
-- [ ] Implementar cache com Redis
-- [ ] Adicionar documentação Swagger/OpenAPI
-- [ ] Implementar CI/CD
-
----
-
-⭐ Se este projeto foi útil para você, considere dar uma estrela!
